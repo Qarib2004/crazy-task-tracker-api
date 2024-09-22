@@ -1,3 +1,17 @@
 server:
   port: 8181
 
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5438/crazy-task-tracker
+    username: crazy-task-tracker
+    password: crazy-task-tracker
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
