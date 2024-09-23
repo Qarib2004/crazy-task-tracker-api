@@ -14,8 +14,10 @@ import java.time.Instant;
 public class ProjectDto {
     @NonNull
     Long id;
+
     @NonNull
     String name;
+
     @NonNull
     @JsonProperty("created_at")
     Instant createdAt;

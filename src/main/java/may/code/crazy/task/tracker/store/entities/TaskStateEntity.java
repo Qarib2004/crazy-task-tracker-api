@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -20,18 +21,35 @@ public class TaskStateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Long id;
-    @Column(unique = true)
+
     String name;
 
-    Long ordinal;
+    @OneToOne
+    TaskStateEntity leftTaskState;
+
+    @OneToOne
+    TaskStateEntity rightTaskState;
 
     String description;
+
     @Builder.Default
     Instant createdAt = Instant.now();
+
+    @ManyToOne
+    ProjectEntity project;
+
     @Builder.Default
     @OneToMany
     @JoinColumn(name = "task_state_id",referencedColumnName = "id")
-    List<TaskStateEntity> taskStates = new ArrayList<>();
+    List<TaskEntity> tasks = new ArrayList<>();
+
+    public Optional<TaskStateEntity> getLeftTaskState() {
+        return Optional.ofNullable(leftTaskState);
+    }
+
+    public Optional<TaskStateEntity> getRightTaskState() {
+        return Optional.ofNullable(rightTaskState);
+    }
 
 
     @Override
@@ -39,10 +57,12 @@ public class TaskStateEntity {
         return "TaskStateEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", ordinal=" + ordinal +
+                ", leftTaskState=" + leftTaskState +
+                ", rightTaskState=" + rightTaskState +
                 ", description='" + description + '\'' +
                 ", createdAt=" + createdAt +
-                ", taskStates=" + taskStates +
+                ", tasks=" + tasks +
                 '}';
     }
 }
+
